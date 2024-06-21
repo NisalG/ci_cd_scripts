@@ -1,4 +1,4 @@
-# ci_cd_scripts
+# CI/CD Scripts (ci_cd_scripts)
 ## Some CI/CD scripts I have used time to time
 
 ### AWS Elastic Beanstalk Extensions
