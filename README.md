@@ -15,3 +15,6 @@ Path: reactjs_frontend/bitbucket/bitbucket-pipelines.yml
 
 ### buildspec.yml file for React.js application with AWS CodeBuild projects (Deployment with AWS Pipelines)  
 Path: reactjs_frontend/aws/buildspec.yml
+
+### Python Lambda function to find and copy AWS artifacts automatically when deploying - triggers on S3 bucket get files from AWS Pipeline
+File: copy_artifacts_from_one_bucket_to_multiple.py
