@@ -1,0 +1,31 @@
+pipelines:
+  branches: # Branch-specific pipelines definitions
+    master:
+      - step:
+          name: Build and test the app
+          image: node:latest
+          script:
+            - npm install
+            - npm run test
+            - npm run build
+  custom: # Pipeline that only runs manually
+    production: 
+      - step:
+          name: Building the app
+          image: node:latest
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - dist/**
+      - step:
+          name: Deploying the app to S3
+          deployment: production
+          script:
+            - pipe: atlassian/aws-s3-deploy:1.4.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_REGION
+                S3_BUCKET: $S3_BUCKET
+                LOCAL_PATH: 'dist'

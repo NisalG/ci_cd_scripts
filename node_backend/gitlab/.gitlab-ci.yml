@@ -1,0 +1,52 @@
+image: node:16-alpine
+
+variables:
+  APP_NAME: nestjs-crud  # Application name
+  VERSION: latest        # Application version (update with versioning scheme)
+  MONGODB_URI: $MONGODB_URI_PROD  # Replace with your MongoDB connection URI for production
+  # Add more production-specific variables as needed (e.g., Docker image name)
+
+stages:
+  - build
+  - test
+  - deploy
+  - production_deploy  # New stage for production deployment
+
+build:
+  stage: build
+  script:
+    - npm install  # Installs project dependencies
+    - npm run build  # Builds Nest.js backend and Next.js frontend
+
+test:
+  stage: test
+  script:
+    - npm test  # Runs unit and integration tests
+
+deploy:
+  stage: deploy
+  script:
+    - docker pull mongo:latest  # Pulls a MongoDB Docker image
+    - docker run -d -p 27017:27017 --name mongodb mongo  # Starts a MongoDB container
+    - echo "Connecting to MongoDB..."
+    - sleep 10  # Wait for MongoDB to start (adjust as needed)
+    - npm run start:dev  # Starts the Nest.js backend (adjust for your start command)
+  artifacts:
+    paths:
+      - dist/  # Saves the built application to artifacts
+
+  only:
+    - master  # Runs deployment only on pushes to the master branch
+
+production_deploy:
+  stage: production_deploy  # New stage for production deployment
+  script:
+    - docker build -t $IMAGE_NAME:latest .  # Builds a Docker image (replace $IMAGE_NAME with your image name)
+    - echo "Pushing Docker image to registry..."
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  # Login to your Docker registry (replace with credentials)
+    - docker push $IMAGE_NAME:latest
+    # ... (add additional commands for deployment to your production environment)
+  only:
+    - tags  # Runs production deployment only on tags
+
+# Add more stages as needed (e.g., staging environment)
