@@ -1,5 +1,5 @@
 # CI/CD Scripts (ci_cd_scripts)
-## Some CI/CD scripts I have used time to time
+## CI/CD scripts for FE & BE apps to use with Bitbucket, GitHub, AWS CodeBuild, AWS Pipelines, AWS Elastic Beanstalk, Python Lambda etc.
 
 ### AWS Elastic Beanstalk Extensions
 Path: laravel_backend/aws_elastic_beanstalk/.ebextensions
